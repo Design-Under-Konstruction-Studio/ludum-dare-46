@@ -65,14 +65,14 @@ namespace Input
 
         private IEnumerator moveOnwardsCR()
         {
-            transform.Translate(0, getDistancePerFrame(), 0);
+            transform.Translate(0, -getDistancePerFrame(), 0);
             yield return new WaitForSeconds(1 / GameDefinitions.FPS);
             StartCoroutine(moveOnwardsCR());
         }
 
         private IEnumerator moveBackwardsCR()
         {
-            transform.Translate(0, -getDistancePerFrame(), 0);
+            transform.Translate(0, getDistancePerFrame(), 0);
             yield return new WaitForSeconds(1 / GameDefinitions.FPS);
             StartCoroutine(moveBackwardsCR());
 

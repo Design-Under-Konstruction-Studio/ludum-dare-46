@@ -24,53 +24,56 @@ namespace Input
         [SerializeField]
         private Camera camera;
 
-        private bool[] isMoving = new bool[4];
+        private bool isMoving = false;
         private float distancePerFrame;
         private float rotationPerFrame;
         private float currentRotation;
 
         private Vector2 screenBounds;
-        private float width;
-        private float height;
+        private Vector3 modelPosition;
 
-        /* void LateUpdate()
+        void LateUpdate()
         {
-            var posY = transform.position.y * 2;
-            var posX = transform.position.x * 2;
-            var position = camera.WorldToViewportPoint(new Vector2(posX, posY));
-            position.x = Mathf.Clamp01(position.x);
-            position.y = Mathf.Clamp01(position.y);
-            transform.position = camera.ViewportToWorldPoint(position);
-        } */
+            modelPosition = camera.WorldToViewportPoint(transform.position);
+            modelPosition.x = Mathf.Clamp01(modelPosition.x);
+            modelPosition.y = Mathf.Clamp01(modelPosition.y);
+            transform.position = camera.ViewportToWorldPoint(modelPosition);
+        }
 
         private void Awake()
         {
             distancePerFrame = translationSpeed / GameDefinitions.FPS;
             rotationPerFrame = rotationSpeed / GameDefinitions.FPS;
-            // currentRotation = 0;
+
+            /* screenBounds = camera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Mathf.Abs(camera.transform.position.z + transform.position.z)));
+            modelSize = new Vector2(GetComponent<BoxCollider>().size.x, GetComponent<BoxCollider>().size.y); */
+
+            // Vector2 bounds = camera.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+            // Debug.Log("Screen : " + Screen.width + " " + Screen.height);
+            // Debug.Log("Bounds : " + screenBounds.x + " " + screenBounds.y);
+
+            // currentRotation = 0; */
         }
 
         public void controlMovement(InputAction.CallbackContext ctx)
         {
-            var moveDirection = ctx.ReadValue<Vector2>();
-
             if (ctx.phase == InputActionPhase.Started)
             {
-                isMoving[(int)getDirection(moveDirection)] = true;
-                StartCoroutine(move(moveDirection, getDirection(moveDirection)));
+                isMoving = true;
+                StartCoroutine(move(ctx.ReadValue<Vector2>()));
             }
             else if (ctx.phase == InputActionPhase.Canceled)
             {
-                stopMovement(ctx.ReadValue<Vector2>());
+                isMoving = false;
             }
 
         }
 
-        private IEnumerator move(Vector2 moveDirection, Direction dirEnum)
+        private IEnumerator move(Vector2 moveDirection)
         {
-            while (isMoving[(int)dirEnum])
+            while (isMoving)
             {
-                transform.Translate(-moveDirection.x * distancePerFrame, moveDirection.y * distancePerFrame, 0);
+                transform.Translate(moveDirection.x * distancePerFrame, moveDirection.y * distancePerFrame, 0);
                 //twist(moveDirection);
                 yield return new WaitForEndOfFrame();
             }
@@ -84,47 +87,6 @@ namespace Input
                 transform.Rotate(0, 0, currentRotation);
             }
         } */
-
-        // TODO: UGLY, UGLY, UGLY, UUUUUGLYYYYYY!!!!!
-        private Direction getDirection(Vector2 direction)
-        {
-            if (direction == Vector2.up)
-            {
-                return Direction.UP;
-            }
-
-            if (direction == Vector2.down)
-            {
-                return Direction.DOWN;
-            }
-
-            if (direction == Vector2.left)
-            {
-                return Direction.LEFT;
-            }
-
-            return Direction.RIGHT;
-        }
-
-        private void stopMovement(Vector2 moveDirection)
-        {
-            if (moveDirection != Vector2.up)
-            {
-                isMoving[(int)Direction.UP] = false;
-            }
-            if (moveDirection != Vector2.down)
-            {
-                isMoving[(int)Direction.DOWN] = false;
-            }
-            if (moveDirection != Vector2.left)
-            {
-                isMoving[(int)Direction.LEFT] = false;
-            }
-            if (moveDirection != Vector2.right)
-            {
-                isMoving[(int)Direction.RIGHT] = false;
-            }
-        }
 
         /*
                 private IEnumerator moveOnwardsCR()

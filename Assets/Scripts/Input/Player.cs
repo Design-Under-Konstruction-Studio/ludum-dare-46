@@ -21,36 +21,52 @@ namespace Input
         #region Inclination
         [Header("Inclination")]
         [SerializeField]
-        private float rotationSpeed = 15.0f;
+        private float rotationSpeed = 5.0f;
 
         [SerializeField]
         private float maxRotation = 15.0f;
 
         private float rotationPerFrame;
-
         private Vector3 currentRotation = new Vector3(0, 0, 0);
-
         private Transform model;
+        [SerializeField]
+        private Vector2 modelSize;
         #endregion
 
         #region Movement limits
         [Header("Movement limits")]
         [SerializeField]
         private Camera camera;
-
-        [SerializeField]
-        private Vector2 minXY = new Vector2(0f, 0f);
-
-        [SerializeField]
-        private Vector2 maxXY = new Vector2(1.0f, 1.0f);
-
         #endregion
 
         void LateUpdate()
         {
+            Vector2 minXY = camera.WorldToViewportPoint(new Vector2(transform.position.x - modelSize.x, transform.position.y - modelSize.y));
+            Vector2 maxXY = camera.WorldToViewportPoint(new Vector2(transform.position.x + modelSize.x, transform.position.y + modelSize.y));
+
+            Debug.Log("min " + minXY.x + " " + minXY.y);
+            Debug.Log("max " + maxXY.x + " " + maxXY.y);
+
             Vector3 modelPosition = camera.WorldToViewportPoint(transform.position);
-            modelPosition.x = Mathf.Clamp01(modelPosition.x);
-            modelPosition.y = Mathf.Clamp01(modelPosition.y);
+            Debug.Log("modelPosition " + modelPosition.x + " " + modelPosition.y + " " + modelPosition.z);
+            if (minXY.x < 0)
+            {
+                modelPosition.x = Mathf.Clamp01(modelPosition.x - minXY.x);
+            }
+            else if (maxXY.x > 1)
+            {
+                modelPosition.x = Mathf.Clamp01(modelPosition.x + maxXY.x);
+            }
+
+            if (minXY.y < 0)
+            {
+                modelPosition.y = Mathf.Clamp01(modelPosition.y - minXY.y);
+            }
+            else if (maxXY.y > 1)
+            {
+                modelPosition.y = Mathf.Clamp01(modelPosition.y + maxXY.y);
+            }
+
             transform.position = camera.ViewportToWorldPoint(modelPosition);
         }
 
@@ -60,6 +76,7 @@ namespace Input
             rotationPerFrame = rotationSpeed / GameDefinitions.FPS;
 
             model = transform.GetChild(0);
+            modelSize = model.GetComponent<BoxCollider>().size;
         }
 
         public void controlMovement(InputAction.CallbackContext ctx)
@@ -87,10 +104,21 @@ namespace Input
 
         private void twist(Vector2 moveDirection)
         {
+            if (
+                (currentRotation.z < -maxRotation && moveDirection == Vector2.left) ||
+                (currentRotation.z > maxRotation && moveDirection == Vector2.right) ||
+                (currentRotation.x < -maxRotation && moveDirection == Vector2.down) ||
+                (currentRotation.x > maxRotation && moveDirection == Vector2.up))
+            {
+                return;
+            }
+
             Vector3 futureRotation = new Vector3(0, 0, 0);
 
             futureRotation.x = moveDirection.y * rotationPerFrame;
             futureRotation.z = moveDirection.x * rotationPerFrame;
+
+            currentRotation += futureRotation;
 
             model.Rotate(futureRotation);
         }

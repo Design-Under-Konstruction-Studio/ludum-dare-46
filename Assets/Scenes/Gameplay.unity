@@ -132,6 +132,25 @@ Camera:
     type: 3}
   m_PrefabInstance: {fileID: 5108931052578803813}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1409358385 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3512206752404586448, guid: ef801435a77660c438d4f0596119a658,
+    type: 3}
+  m_PrefabInstance: {fileID: 275758345842484705}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1409358387
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409358385}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.9313874, y: 3.926012, z: 5.9533415}
+  m_Center: {x: -0.007951498, y: -0.8951563, z: 0.5998492}
 --- !u!4 &1646639716 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6331090859214556208, guid: 9a9a90fbf36e507409cbf808e4e6347c,
@@ -182,6 +201,16 @@ PrefabInstance:
       propertyPath: camera
       value: 
       objectReference: {fileID: 749055016}
+    - target: {fileID: 2072940433039721250, guid: ef801435a77660c438d4f0596119a658,
+        type: 3}
+      propertyPath: maxRotation
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2072940433039721250, guid: ef801435a77660c438d4f0596119a658,
+        type: 3}
+      propertyPath: rotationSpeed
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 2113641528122310525, guid: ef801435a77660c438d4f0596119a658,
         type: 3}
       propertyPath: m_Name
@@ -277,7 +306,8 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 749055016}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 199775872, guid: ef801435a77660c438d4f0596119a658, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ef801435a77660c438d4f0596119a658, type: 3}
 --- !u!1001 &5108931052578803813
 PrefabInstance:

@@ -7,6 +7,6 @@ namespace Core
     namespace Delegate
     {
         [Serializable]
-        public delegate void OnStatChanged(StatType statType, float amountChanged);
+        public delegate void OnStatChanged(StatType statType);
     }
 }

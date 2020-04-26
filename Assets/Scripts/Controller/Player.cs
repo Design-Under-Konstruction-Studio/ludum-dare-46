@@ -5,8 +5,7 @@ using System.Collections;
 
 using Core.Constant;
 using Core.Data;
-
-namespace Input
+namespace Controller
 {
     public class Player : MonoBehaviour
     {

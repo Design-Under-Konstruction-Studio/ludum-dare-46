@@ -44,10 +44,13 @@ namespace Core
             #region Starting Points
             [Header("Starting Points")]
             [SerializeField]
-            private float startingOxygenLevel = 50.0f;
+            private float oxygenStartingLevel = 50.0f;
 
             [SerializeField]
-            private float startingFuelLevel = 50.0f;
+            private float fuelStartingLevel = 50.0f;
+
+            [SerializeField]
+            private bool initialized = false;
             #endregion
 
             #region Events
@@ -86,6 +89,30 @@ namespace Core
                 }
             }
 
+            public float OxygenStartingLevel
+            {
+                get
+                {
+                    return oxygenStartingLevel;
+                }
+                private set
+                {
+
+                }
+            }
+
+            public float FuelStartingLevel
+            {
+                get
+                {
+                    return fuelStartingLevel;
+                }
+                private set
+                {
+
+                }
+            }
+
             public bool Alive
             {
                 get
@@ -97,13 +124,26 @@ namespace Core
 
                 }
             }
+
+            public bool Initialized
+            {
+                get
+                {
+                    return initialized;
+                }
+                private set
+                {
+
+                }
+            }
             #endregion
 
             public void init()
             {
                 alive = true;
-                fuelLevel = startingFuelLevel;
-                oxygenLevel = startingOxygenLevel;
+                fuelLevel = fuelStartingLevel;
+                oxygenLevel = oxygenStartingLevel;
+                initialized = true;
             }
 
             #region Subscribe/unsubscribe
@@ -153,7 +193,7 @@ namespace Core
 
                 if (onStatChanged != null)
                 {
-                    onStatChanged(statType, amountChanged);
+                    onStatChanged(statType);
                 }
             }
 

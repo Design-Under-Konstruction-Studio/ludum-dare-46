@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a5fadc16f63124c97a581b4e3bd6c3, type: 3}
   m_Name: Player Data
   m_EditorClassIdentifier: 
-  oxygenLevel: 0
-  fuelLevel: 0
-  isAlive: 1
-  oxygenModifier: -1
-  fuelModifier: -1
+  oxygenLevel: -0.083156355
+  fuelLevel: -0.083156355
+  alive: 1
+  oxygenModifier: -5
+  fuelModifier: -5
   maximumOxygenLevel: 100
   maximumFuelLevel: 100
-  startingOxygenLevel: 50
-  startingFuelLevel: 50
+  oxygenStartingLevel: 50
+  fuelStartingLevel: 50
+  initialized: 1

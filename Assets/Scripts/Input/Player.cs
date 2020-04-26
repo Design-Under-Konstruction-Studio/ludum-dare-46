@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using System.Collections;
 
 using Core.Constant;
+using Core.Data;
 
 namespace Input
 {
@@ -36,18 +37,37 @@ namespace Input
         #region Movement limits
         [Header("Movement limits")]
         [SerializeField]
-        private Camera camera;
+        private Camera modelCamera;
         #endregion
 
-        void LateUpdate()
+        #region Stats
+        [Header("Stats")]
+        [SerializeField]
+        private PlayerData playerData;
+        #endregion
+
+        public void controlMovement(InputAction.CallbackContext ctx)
         {
-            Vector2 minXY = camera.WorldToViewportPoint(new Vector2(transform.position.x - modelSize.x, transform.position.y - modelSize.y));
-            Vector2 maxXY = camera.WorldToViewportPoint(new Vector2(transform.position.x + modelSize.x, transform.position.y + modelSize.y));
+            if (ctx.phase == InputActionPhase.Started)
+            {
+                isMoving = true;
+                StartCoroutine(move(ctx.ReadValue<Vector2>()));
+            }
+            else if (ctx.phase == InputActionPhase.Canceled)
+            {
+                isMoving = false;
+            }
+        }
+
+        private void LateUpdate()
+        {
+            Vector2 minXY = modelCamera.WorldToViewportPoint(new Vector2(transform.position.x - modelSize.x, transform.position.y - modelSize.y));
+            Vector2 maxXY = modelCamera.WorldToViewportPoint(new Vector2(transform.position.x + modelSize.x, transform.position.y + modelSize.y));
 
             Debug.Log("min " + minXY.x + " " + minXY.y);
             Debug.Log("max " + maxXY.x + " " + maxXY.y);
 
-            Vector3 modelPosition = camera.WorldToViewportPoint(transform.position);
+            Vector3 modelPosition = modelCamera.WorldToViewportPoint(transform.position);
             Debug.Log("modelPosition " + modelPosition.x + " " + modelPosition.y + " " + modelPosition.z);
             if (minXY.x < 0)
             {
@@ -67,7 +87,7 @@ namespace Input
                 modelPosition.y = Mathf.Clamp01(modelPosition.y + maxXY.y);
             }
 
-            transform.position = camera.ViewportToWorldPoint(modelPosition);
+            transform.position = modelCamera.ViewportToWorldPoint(modelPosition);
         }
 
         private void Awake()
@@ -77,18 +97,11 @@ namespace Input
 
             model = transform.GetChild(0);
             modelSize = model.GetComponent<BoxCollider>().size;
-        }
 
-        public void controlMovement(InputAction.CallbackContext ctx)
-        {
-            if (ctx.phase == InputActionPhase.Started)
+            if (playerData != null)
             {
-                isMoving = true;
-                StartCoroutine(move(ctx.ReadValue<Vector2>()));
-            }
-            else if (ctx.phase == InputActionPhase.Canceled)
-            {
-                isMoving = false;
+                playerData.init();
+                StartCoroutine(decreaseStatsNaturally());
             }
         }
 
@@ -121,6 +134,26 @@ namespace Input
             currentRotation += futureRotation;
 
             model.Rotate(futureRotation);
+        }
+
+        private IEnumerator decreaseStatsNaturally()
+        {
+            while (playerData.Alive)
+            {
+                playerData.triggerNaturalStatChange();
+                if (playerData.OxygenLevel <= 0)
+                {
+                    playerData.triggerDefeat();
+                    break;
+                }
+
+                if (playerData.FuelLevel <= 0)
+                {
+                    playerData.triggerDefeat();
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
         }
     }
 }

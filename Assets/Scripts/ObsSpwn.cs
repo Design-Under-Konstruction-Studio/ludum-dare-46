@@ -5,10 +5,14 @@ using UnityEngine;
 public class ObsSpwn : MonoBehaviour
 {
     public GameObject obsSpawner;
-    public Transform spwnPosition;
-    // Start is called before the first frame update
+    //public Transform spwnPosition;
+    
+    void Start() 
+    {
+        SpawnObstacle();
+    }
     void SpawnObstacle()
     {
-        Instantiate(obsSpawner, spwnPosition);
+        Instantiate(obsSpawner, this.transform);
     }
 }

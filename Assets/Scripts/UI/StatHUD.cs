@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-using Core.Data;
+using Player.Data;
 using Core.Enumeration;
 
 namespace UI

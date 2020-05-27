@@ -4,7 +4,7 @@ using Core.Delegate;
 using Core.Enumeration;
 using Core.Constant;
 
-namespace Core
+namespace Player
 {
     namespace Data
     {
@@ -221,6 +221,8 @@ namespace Core
             }
             #endregion
 
+            private PlayerData()
+            { }
 
         }
     }

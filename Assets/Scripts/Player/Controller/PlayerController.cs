@@ -32,7 +32,7 @@ namespace Player
             #region Stats
             [Header("Stats")]
             [SerializeField]
-            private PlayerData playerData;
+            private StatData statData;
             #endregion
 
             [Header("Internal movement variables - do not change!")]
@@ -42,6 +42,11 @@ namespace Player
             [SerializeField]
             private bool isMoving = false;
             #endregion
+
+            private void LateUpdate()
+            {
+                PlayerTranslationUtils.adjustForScreenBoundaries(modelCamera, transform.GetChild(0).GetComponent<Collider>());
+            }
 
             public void controlMovement(InputAction.CallbackContext ctx)
             {
@@ -58,10 +63,10 @@ namespace Player
 
             private void Awake()
             {
-                if (playerData != null)
+                if (statData != null)
                 {
                     model = transform.GetChild(0);
-                    playerData.init();
+                    statData.init();
                     StartCoroutine(decreaseStatsNaturally());
                 }
             }
@@ -90,18 +95,18 @@ namespace Player
 
             private IEnumerator decreaseStatsNaturally()
             {
-                while (playerData.Alive)
+                while (statData.Alive)
                 {
-                    playerData.triggerNaturalStatChange();
-                    if (playerData.OxygenLevel <= 0)
+                    statData.triggerNaturalStatChange();
+                    if (statData.OxygenLevel <= 0)
                     {
-                        playerData.triggerDefeat();
+                        statData.triggerDefeat();
                         break;
                     }
 
-                    if (playerData.FuelLevel <= 0)
+                    if (statData.FuelLevel <= 0)
                     {
-                        playerData.triggerDefeat();
+                        statData.triggerDefeat();
                         break;
                     }
                     yield return new WaitForEndOfFrame();
@@ -112,7 +117,7 @@ namespace Player
             {
                 if (spawnable != null)
                 {
-                    spawnable.onHit(playerData);
+                    spawnable.onHit(statData);
                 }
             }
         }

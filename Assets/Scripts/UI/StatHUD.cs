@@ -12,7 +12,7 @@ namespace UI
         #region Data
         [Header("Player Data")]
         [SerializeField]
-        private PlayerData playerData;
+        private StatData playerData;
         #endregion
 
         #region UI Components

@@ -30,15 +30,15 @@ namespace Environment
             #endregion
 
             #region Collision methods
-            public void onHit(PlayerData playerData)
+            public void onHit(StatData statData)
             {
                 onHit();
-                hit(playerData);
+                hit(statData);
                 onDestroy();
             }
 
             protected abstract void onHit();
-            protected abstract void hit(PlayerData playerData);
+            protected abstract void hit(StatData statData);
             protected abstract void onDestroy();
             #endregion
 

@@ -14,13 +14,13 @@ namespace Environment
             {
                 StartCoroutine(countUntilNextSpawnCR(this));
             }
-            override protected void hit(PlayerData playerData)
+            override protected void hit(StatData statData)
             {
                 if (statImpact < 0)
                 {
                     statImpact *= -1;
                 }
-                playerData.triggerStatChange(statType, statImpact);
+                statData.triggerStatChange(statType, statImpact);
             }
 
             override protected void onHit()

@@ -86,6 +86,13 @@ namespace Player
             [Header("Translation")]
             [SerializeField]
             private float translationSpeed = 5.0f;
+
+            [Header("Internal calculation only - do not change!")]
+            [SerializeField]
+            private Vector3 screenLimitsMax;
+
+            [SerializeField]
+            private Vector3 screenLimitsMin;
             #endregion
 
             private MovementData()

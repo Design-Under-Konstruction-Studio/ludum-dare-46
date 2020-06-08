@@ -8,8 +8,8 @@ namespace Player
 {
     namespace Data
     {
-        [CreateAssetMenu(fileName = "Player Data", menuName = "Data/Player Data", order = 0)]
-        public class PlayerData : ScriptableObject
+        [CreateAssetMenu(fileName = "Stat Data", menuName = "Data/Stat Data", order = 0)]
+        public class StatData : ScriptableObject
         {
             #region Stats
             [Header("Stats - Do not change")]
@@ -221,7 +221,7 @@ namespace Player
             }
             #endregion
 
-            private PlayerData()
+            private StatData()
             { }
 
         }

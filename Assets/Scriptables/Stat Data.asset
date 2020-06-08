@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78a5fadc16f63124c97a581b4e3bd6c3, type: 3}
-  m_Name: Player Data
+  m_Script: {fileID: 11500000, guid: 78194683698c08e4088eb693867822a9, type: 3}
+  m_Name: Stat Data
   m_EditorClassIdentifier: 
-  oxygenLevel: -0.083156355
-  fuelLevel: -0.083156355
+  oxygenLevel: -0.016076064
+  fuelLevel: -0.016076064
   alive: 1
-  oxygenModifier: -5
-  fuelModifier: -5
+  oxygenModifier: -1
+  fuelModifier: -1
   maximumOxygenLevel: 100
   maximumFuelLevel: 100
   oxygenStartingLevel: 50

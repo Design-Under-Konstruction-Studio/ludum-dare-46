@@ -6,7 +6,7 @@ using System.Collections;
 using Player.Data;
 using Player.Utils;
 
-using Environment.Core;
+using Environment.Spawnable;
 
 namespace Player
 {
@@ -115,12 +115,8 @@ namespace Player
 
             public void onHit(BaseSpawnable spawnable)
             {
-                if (spawnable != null)
-                {
-                    spawnable.onHit(statData);
-                }
+                statData.triggerStatChange(spawnable.Stat, spawnable.Impact);
             }
         }
     }
-
 }

@@ -1,3 +1,5 @@
+using System;
+
 namespace Core
 {
     namespace Constant
@@ -5,7 +7,7 @@ namespace Core
         public class GameDefinitions
         {
             private GameDefinitions()
-            { throw new System.Exception(); }
+            { throw new Exception(); }
 
             public static readonly int FPS = 60;
         }

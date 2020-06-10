@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 namespace Core
 {
@@ -8,7 +9,7 @@ namespace Core
         {
             private MathUtils()
             {
-                throw new System.Exception();
+                throw new Exception();
             }
 
             public static float reduce(Vector3 redux, Vector3 direction)

@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17a6e9a5f9e294a45a78b0af4ea12a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData: {fileID: 11400000, guid: fda3a265bcc08ce4992e1996d2eec758, type: 2}
+  playerData: {fileID: 11400000, guid: 7706e0615463c03489e425b89c3917a8, type: 2}
   oxygenSlider: {fileID: 925269179027267734}
   fuelSlider: {fileID: 673614620351555910}
 --- !u!1 &4677874163462453553

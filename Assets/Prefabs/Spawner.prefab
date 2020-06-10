@@ -43,4 +43,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6956280ee2f94d4298928232f1299bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawners: []
+  modelCamera: {fileID: 0}
+  playerController: {fileID: 0}
+  spawners:
+  - {fileID: 1790800584011861656, guid: 5a65ae0031eb8b04d97c955a539e710b, type: 3}
+  - {fileID: 5841468671470014893, guid: 262f514ed91b33b4987fb81062a07d22, type: 3}
+  - {fileID: 878054453022834354, guid: 6b3108ee6987be6489ab0ffb26fb5615, type: 3}
+  - {fileID: 1252199323590090921, guid: 7e42dbe2b4ccbd74db6698ed573cd54c, type: 3}
+  - {fileID: 2354198105080115210, guid: 18c74953656931e4196a224361ced637, type: 3}

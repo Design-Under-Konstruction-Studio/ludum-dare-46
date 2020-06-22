@@ -13,19 +13,11 @@ namespace Player
                 //TODO: Optimize both matematically and programatically
                 Vector3 modelMin = camera.WorldToViewportPoint(modelCollider.bounds.min);
                 Vector3 modelMax = camera.WorldToViewportPoint(modelCollider.bounds.max);
-                Debug.Log("modelMin " + modelMin);
-                Debug.Log("modelMax " + modelMax);
-                Debug.Log(" ");
 
                 Vector3 modelPosition = camera.WorldToViewportPoint(modelCollider.transform.position);
-                Debug.Log("modelPosition " + modelPosition);
-                Debug.Log(" ");
 
                 Vector3 modelDistancesMin = modelPosition - modelMin;
                 Vector3 modelDistancesMax = modelMax - modelPosition;
-                Debug.Log("modelDistancesMin " + modelDistancesMin);
-                Debug.Log("modelDistancesMax " + modelDistancesMax);
-                Debug.Log(" ");
 
                 if (modelMax.x >= 1)
                 {
@@ -44,17 +36,7 @@ namespace Player
                 {
                     modelPosition.y = 0 + modelDistancesMin.y;
                 }
-                /*0.8918822
-                4.859679
-                                if (modelDistancesMax.z >= 1)
-                                {
-                                    modelPosition.z = 1 - modelDistancesMax.z;
-                                }
-                                if (modelDistancesMin.z <= 0)
-                                {
-                                    modelPosition.z = 0 + modelDistancesMin.z;
-                                }
-                */
+
                 modelCollider.transform.position = camera.ViewportToWorldPoint(modelPosition);
             }
 

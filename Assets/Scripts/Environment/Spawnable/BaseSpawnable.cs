@@ -59,7 +59,7 @@ namespace Environment
             #region MonoBehaviour
             private void OnCollisionEnter(Collision col)
             {
-                PlayerController playerController = col.transform.GetComponent<PlayerController>();
+                PlayerController playerController = col.transform.GetComponentInParent<PlayerController>();
                 if (playerController != null)
                 {
                     playerController.onHit(this);
@@ -74,15 +74,15 @@ namespace Environment
                 for (int spawnCounter = 0; spawnCounter <= spawnAmount; spawnCounter++)
                 {
                     Vector3 spawnablePosition = modelCamera.ViewportToWorldPoint(new Vector3(Random.value, Random.value, Random.Range(100, maxSpawnDistance)));
+                    Vector3 movementDirection = (playerController.transform.position - spawnablePosition).normalized;
                     BaseSpawnable spawnable = Transform.Instantiate(this, spawnablePosition, Quaternion.identity);
-                    spawnable.transform.LookAt(playerController.transform);
-                    spawnable.onSpawn(Random.value * maxMovementSpeed, playerController.transform.position);
+                    spawnable.onSpawn(Random.value * maxMovementSpeed, movementDirection);
                 }
             }
 
-            private void onSpawn(float movementSpeed, Vector3 targetPosition)
+            private void onSpawn(float movementSpeed, Vector3 movementDirection)
             {
-                StartCoroutine(moveCR(movementSpeed, targetPosition));
+                StartCoroutine(moveCR(movementSpeed, movementDirection));
             }
             private void onDestroy()
             {
@@ -90,12 +90,13 @@ namespace Environment
             }
             #endregion
 
-            private IEnumerator moveCR(float movementSpeed, Vector3 targetPosition)
+            private IEnumerator moveCR(float movementSpeed, Vector3 movementDirection)
             {
                 while (true)
                 {
-                    Vector3 newPosition = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed / GameDefinitions.FPS);
-                    if (transform.position.Equals(newPosition))
+                    Vector3 newPosition = transform.position + (movementDirection * movementSpeed / GameDefinitions.FPS);
+
+                    if (newPosition.z <= -10)
                     {
                         onDestroy();
                     }

@@ -116,6 +116,17 @@ namespace Player
             public void onHit(BaseSpawnable spawnable)
             {
                 statData.triggerStatChange(spawnable.Stat, spawnable.Impact);
+                Debug.Log("I am hitting!");
+            }
+
+            private void OnCollisionEnter(Collision col)
+            {
+                BaseSpawnable spawnable = col.transform.GetComponent<BaseSpawnable>();
+                if (spawnable != null)
+                {
+                    onHit(spawnable);
+                    Debug.Log("I am being hit!");
+                }
             }
         }
     }

@@ -5,6 +5,6 @@ namespace Core
     namespace Delegate
     {
         [Serializable]
-        public delegate void OnGameWon();
+        public delegate void OnGameStarted(float durationUntilActualStart);
     }
 }

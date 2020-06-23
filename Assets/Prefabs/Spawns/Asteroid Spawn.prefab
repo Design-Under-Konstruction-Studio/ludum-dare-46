@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c3685ea54ebd564094d3a3609adfd2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statType: 0
+  statType: 1
   statImpact: -20
   maxMovementSpeed: 100
   maxSpawnAmount: 4

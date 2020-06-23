@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 using System.Collections;
 
+using Core.Events;
 using Player.Data;
 using Player.Utils;
 
@@ -35,6 +36,15 @@ namespace Player
             private StatData statData;
             #endregion
 
+            #region Events
+            [Header("Events")]
+            [SerializeField]
+            private GameStartEvent gameStartEvent;
+
+            [SerializeField]
+            private GameLostEvent gameLostEvent;
+            #endregion
+
             [Header("Internal movement variables - do not change!")]
             [SerializeField]
             private Vector3 currentRotation = new Vector3(0, 0, 0);
@@ -61,8 +71,14 @@ namespace Player
                 }
             }
 
-            private void Awake()
+            private void onGameStarted(float durationUntilStart)
             {
+                StartCoroutine(delayAndStart(durationUntilStart));
+            }
+
+            private IEnumerator delayAndStart(float delayDuration)
+            {
+                yield return new WaitForSeconds(delayDuration);
                 if (statData != null)
                 {
                     model = transform.GetChild(0);
@@ -71,9 +87,14 @@ namespace Player
                 }
             }
 
+            private void Awake()
+            {
+                gameStartEvent.subscribe(onGameStarted);
+            }
+
             private IEnumerator move(Vector2 moveDirection)
             {
-                while (isMoving)
+                while (isMoving && statData.Initialized)
                 {
                     processTranslation(moveDirection);
                     processRotation(moveDirection);
@@ -83,7 +104,10 @@ namespace Player
 
             private void processTranslation(Vector2 moveDirection)
             {
-                transform.Translate(moveDirection.x * movementData.DistancePerFrame, moveDirection.y * movementData.DistancePerFrame, 0);
+                float movementSpeed = statData.FuelLevel <= statData.FuelLevelThreshold ?
+                    movementData.DistancePerFrame * statData.LowFuelSpeedModifier :
+                    movementData.DistancePerFrame;
+                transform.Translate(moveDirection.x * movementSpeed, moveDirection.y * movementSpeed, 0);
             }
 
             private void processRotation(Vector2 moveDirection)
@@ -100,13 +124,7 @@ namespace Player
                     statData.triggerNaturalStatChange();
                     if (statData.OxygenLevel <= 0)
                     {
-                        statData.triggerDefeat();
-                        break;
-                    }
-
-                    if (statData.FuelLevel <= 0)
-                    {
-                        statData.triggerDefeat();
+                        gameLostEvent.trigger();
                         break;
                     }
                     yield return new WaitForEndOfFrame();
@@ -116,7 +134,6 @@ namespace Player
             public void onHit(BaseSpawnable spawnable)
             {
                 statData.triggerStatChange(spawnable.Stat, spawnable.Impact);
-                Debug.Log("I am hitting!");
             }
 
             private void OnCollisionEnter(Collision col)
@@ -125,7 +142,6 @@ namespace Player
                 if (spawnable != null)
                 {
                     onHit(spawnable);
-                    Debug.Log("I am being hit!");
                 }
             }
         }

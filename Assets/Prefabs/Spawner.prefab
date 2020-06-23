@@ -45,6 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modelCamera: {fileID: 0}
   playerController: {fileID: 0}
+  gameStartEvent: {fileID: 11400000, guid: a47b3070228a7f242831a255efc6744c, type: 2}
+  gameLostEvent: {fileID: 11400000, guid: 1efc1007886d5704fa6b01b50ee3d7f4, type: 2}
   spawners:
   - {fileID: 1790800584011861656, guid: 5a65ae0031eb8b04d97c955a539e710b, type: 3}
   - {fileID: 5841468671470014893, guid: 262f514ed91b33b4987fb81062a07d22, type: 3}

@@ -52,8 +52,11 @@ namespace Environment
             [SerializeField]
             private float maxSpawnDistance;
 
+            private Spawner spawnerParent;
             private Camera modelCamera;
             private PlayerController playerController;
+            private bool canSpawn = false;
+            private bool canExist = true;
             #endregion
 
             #region MonoBehaviour
@@ -75,7 +78,7 @@ namespace Environment
                 {
                     Vector3 spawnablePosition = modelCamera.ViewportToWorldPoint(new Vector3(Random.value, Random.value, Random.Range(100, maxSpawnDistance)));
                     Vector3 movementDirection = (playerController.transform.position - spawnablePosition).normalized;
-                    BaseSpawnable spawnable = Transform.Instantiate(this, spawnablePosition, Quaternion.identity);
+                    BaseSpawnable spawnable = Transform.Instantiate(this, spawnablePosition, Quaternion.identity, spawnerParent.transform);
                     spawnable.onSpawn(Random.value * maxMovementSpeed, movementDirection);
                 }
             }
@@ -90,13 +93,18 @@ namespace Environment
             }
             #endregion
 
+            public void kill()
+            {
+                canExist = false;
+            }
+
             private IEnumerator moveCR(float movementSpeed, Vector3 movementDirection)
             {
                 while (true)
                 {
                     Vector3 newPosition = transform.position + (movementDirection * movementSpeed / GameDefinitions.FPS);
 
-                    if (newPosition.z <= -10)
+                    if (newPosition.z <= -10 || !canExist)
                     {
                         onDestroy();
                     }
@@ -106,16 +114,22 @@ namespace Environment
                 }
             }
 
-            public IEnumerator spawnCR(Camera camera, PlayerController player)
+            public IEnumerator spawnCR(Camera camera, PlayerController player, Spawner spawner)
             {
+                spawnerParent = spawner;
                 modelCamera = camera;
                 playerController = player;
-                while (maxSpawnDelay > 0)
+                while (maxSpawnDelay > 0 && canSpawn)
                 {
                     onSpawnReady((int)Random.value * maxSpawnAmount);
                     yield return new WaitForSeconds(Random.value * maxSpawnDelay);
                 }
 
+            }
+
+            public void allowSpawning(bool isSpawnable)
+            {
+                canSpawn = isSpawnable;
             }
         }
     }

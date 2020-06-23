@@ -3,6 +3,7 @@ using UnityEngine;
 using Core.Delegate;
 using Core.Enumeration;
 using Core.Constant;
+using Core.Events;
 
 namespace Player
 {
@@ -30,6 +31,9 @@ namespace Player
 
             [SerializeField]
             private float fuelModifier = -1.0f;
+
+            [SerializeField]
+            private float lowFuelSpeedModifier = 0.1f;
             #endregion
 
             #region Maximum Levels
@@ -39,6 +43,9 @@ namespace Player
 
             [SerializeField]
             private float maximumFuelLevel = 100.0f;
+
+            [SerializeField]
+            private float fuelLevelThreshold = 20.0f;
             #endregion
 
             #region Starting Points
@@ -49,19 +56,12 @@ namespace Player
             [SerializeField]
             private float fuelStartingLevel = 50.0f;
 
-            [SerializeField]
             private bool initialized = false;
             #endregion
 
             #region Events
             [SerializeField]
             private OnStatChanged onStatChanged;
-
-            [SerializeField]
-            private OnGameLost onGameLost;
-
-            [SerializeField]
-            private OnGameWon onGameWon;
             #endregion
 
             #region Properties
@@ -89,6 +89,18 @@ namespace Player
                 }
             }
 
+            public float LowFuelSpeedModifier
+            {
+                get
+                {
+                    return lowFuelSpeedModifier;
+                }
+                private set
+                {
+
+                }
+            }
+
             public float OxygenStartingLevel
             {
                 get
@@ -106,6 +118,18 @@ namespace Player
                 get
                 {
                     return fuelStartingLevel;
+                }
+                private set
+                {
+
+                }
+            }
+
+            public float FuelLevelThreshold
+            {
+                get
+                {
+                    return fuelLevelThreshold;
                 }
                 private set
                 {
@@ -156,26 +180,6 @@ namespace Player
             {
                 onStatChanged -= callback;
             }
-
-            public void subscribe(OnGameWon callback)
-            {
-                onGameWon += callback;
-            }
-
-            public void unsubscribe(OnGameWon callback)
-            {
-                onGameWon -= callback;
-            }
-
-            public void subscribe(OnGameLost callback)
-            {
-                onGameLost += callback;
-            }
-
-            public void unsubscribe(OnGameLost callback)
-            {
-                onGameLost -= callback;
-            }
             #endregion
 
             #region Trigger
@@ -189,6 +193,10 @@ namespace Player
                     case StatType.FUEL_LEVEL:
                         fuelLevel += amountChanged;
                         break;
+                    case StatType.BOTH:
+                        fuelLevel += amountChanged;
+                        oxygenLevel += amountChanged;
+                        break;
                 }
 
                 if (onStatChanged != null)
@@ -201,23 +209,6 @@ namespace Player
             {
                 triggerStatChange(StatType.FUEL_LEVEL, fuelModifier / GameDefinitions.FPS);
                 triggerStatChange(StatType.OXYGEN_LEVEL, oxygenModifier / GameDefinitions.FPS);
-            }
-
-            public void triggerVictory()
-            {
-                if (onGameWon != null)
-                {
-                    onGameWon();
-                }
-            }
-
-            public void triggerDefeat()
-            {
-                if (onGameLost != null)
-                {
-                    alive = false;
-                    onGameLost();
-                }
             }
             #endregion
 
